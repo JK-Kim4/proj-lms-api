@@ -1,1 +1,3 @@
 rootProject.name = 'lms-server'
+include 'module-common', 'module-member'
+

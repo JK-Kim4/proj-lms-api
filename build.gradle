@@ -1,31 +1,42 @@
-plugins {
-	id 'org.springframework.boot' version '2.6.6'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
-}
-
-group = 'com.tomatoedu'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
+buildscript {
+	ext {
+		springBootVersion = '2.5.1'
+		dependencyManagementVersion = '1.0.11.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		dependencies {
+			classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+			classpath "io.spring.gradle:dependency-management-plugin:${dependencyManagementVersion}"
+		}
 	}
 }
 
-repositories {
-	mavenCentral()
+
+subprojects {
+	group 'com.tomatoedu'
+	version '1.0'
+
+	apply plugin: 'java'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+
+	sourceCompatibility = 11
+
+	repositories {
+		mavenCentral()
+	}
+
+	dependencies {
+		testCompile group: 'junit', name: 'junit', version: '4.12'
+	}
 }
 
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
 
-tasks.named('test') {
-	useJUnitPlatform()
+project(':module-member') {
+	dependencies {
+		compile project(':module-common')
+	}
 }
